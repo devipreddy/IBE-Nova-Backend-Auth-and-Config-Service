@@ -1,0 +1,70 @@
+# ==========================================
+# Operating System Files (macOS)
+# ==========================================
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# ==========================================
+# Build System & Compiled Output (Java/Spring)
+# ==========================================
+target/
+build/
+.gradle/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+!wrapper/gradle-wrapper.jar
+
+# ==========================================
+# IDEs and Editors
+# ==========================================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+gen/
+
+# Eclipse / Spring Tool Suite
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# VS Code
+.vscode/
+
+# ==========================================
+# Logs and Temporary Files
+# ==========================================
+*.log
+logs/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+
+# ==========================================
+# Secrets and Environment Variables
+# ==========================================
+.env
+.env.*
+application-local.properties
+application-local.yml
