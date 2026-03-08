@@ -1,0 +1,49 @@
+version: 0.2
+
+phases:
+
+  install:
+    commands:
+      - docker buildx create --use
+
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
+  build:
+    commands:
+
+      echo "Building orchestrator service"
+
+      cd SourceArtifact
+
+      docker buildx build \
+      --platform linux/amd64,linux/arm64 \
+      -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ORCHESTRATOR_REPO:$IMAGE_TAG \
+      --push .
+
+      cd ..
+
+      echo "Building config service"
+
+      cd SourceArtifact_1
+
+      docker buildx build \
+      --platform linux/amd64,linux/arm64 \
+      -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONFIG_REPO:$IMAGE_TAG \
+      --push .
+
+      cd ..
+
+  post_build:
+    commands:
+
+      printf '[{"name":"app","imageUri":"%s"},{"name":"sidecar","imageUri":"%s"}]' \
+      $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ORCHESTRATOR_REPO:$IMAGE_TAG \
+      $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONFIG_REPO:$IMAGE_TAG \
+      > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
