@@ -39,7 +39,7 @@ phases:
   post_build:
     commands:
 
-      printf '[{"name":"orchestrator","imageUri":"%s"},{"name":"config-service","imageUri":"%s"}]' \
+      printf '[{"name":"app","imageUri":"%s"},{"name":"sidecar","imageUri":"%s"}]' \
       $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ORCHESTRATOR_REPO:$IMAGE_TAG \
       $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONFIG_REPO:$IMAGE_TAG \
       > imagedefinitions.json
